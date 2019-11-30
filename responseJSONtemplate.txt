@@ -1,0 +1,45 @@
+[
+  {
+    "ControlNumber": 1.6,
+    "ControlDesc": "Ensure IAM password policy requires at least one lowercase letter (Scored)",
+    "ExpectedValue": "True",
+    "CurrentValue": "False",
+    "IsCompliant": "False",
+    "Remarks": "Password policy does not require at least one uppercase letter",
+    "ScoredControl": "True",
+    "IsFailure": "False"
+  },
+  {
+    "ControlNumber": 2.3,
+    "ControlDesc": "Ensure the S3 bucket CloudTrail logs to is not publicly accessible (Scored)",
+    "ExpectedValue": "True",
+    "CurrentValue": "False",
+    "IsCompliant": "False",
+    "Remarks": "Trailbucket doesn't exist. || Offenders: || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket || arn:aws:cloudtrail:us-east-1:501440879168:trail/Admin:NoBucket",
+    "ScoredControl": "True",
+    "IsFailure": "False"
+  },
+  {
+    "ControlNumber": 3.4,
+    "ControlDesc": "Ensure a log metric filter and alarm exist for IAM policy changes (Scored)",
+    "ExpectedValue": "True",
+    "CurrentValue": "False",
+    "IsCompliant": "False",
+    "Remarks": "An error occurred (ResourceNotFoundException) when calling the DescribeMetricFilters operation: The specified log group does not exist.",
+    "ScoredControl": "True",
+    "IsFailure": "True"
+  },
+  {
+    "ControlNumber": 4.2,
+    "ControlDesc": "Ensure the default security group of every VPC restricts all traffic (Scored)",
+    "ExpectedValue": "True",
+    "CurrentValue": "True",
+    "IsCompliant": "True",
+    "Remarks": "",
+    "ScoredControl": "True",
+    "IsFailure": "False"
+  }
+]
+=======================================================
+============= COMPLIANCE SCORE : 25.0% ================
+=======================================================

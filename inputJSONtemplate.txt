@@ -1,0 +1,22 @@
+[
+  {
+    "ControlNumber":1.6,                    --- mandatory field [ Control Number of the CIS Benchmark parameters ]
+    "ControlDesc":"Ensure IAM password policy requires at least one lowercase letter (Scored)",
+    "ExpectedValue":"True"                  --- mandatory field [ User defined Expected value, generally "True/False" or numeric value ]
+  },
+  {
+    "ControlNumber":2.3,
+    "ControlDesc":"Ensure the S3 bucket CloudTrail logs to is not publicly accessible (Scored)",
+    "ExpectedValue":"True"
+  },
+  {
+    "ControlNumber":3.4,
+    "ControlDesc":"Ensure a log metric filter and alarm exist for IAM policy changes (Scored)",
+    "ExpectedValue":"True"
+  },
+  {
+    "ControlNumber":4.2,
+    "ControlDesc":"Ensure the default security group of every VPC restricts all traffic (Scored)",
+    "ExpectedValue":"True"
+  }
+]
