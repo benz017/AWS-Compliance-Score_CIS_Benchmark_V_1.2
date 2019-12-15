@@ -8,6 +8,7 @@ from datetime import datetime
 from multiprocessing import cpu_count, Pool
 from botocore.client import Config
 import re
+import asyncio
 
 
 accesskey = "<< CloudAccessKey >>"
@@ -22,6 +23,8 @@ AWS_CIS_BENCHMARK_VERSION = "1.2"
 # Control 1.1 - Days allowed since use of root account.
 CONTROL_1_1_DAYS = 0
 
+TOTALSCORE = 0
+
 config = Config(connect_timeout=5, retries={'max_attempts': 0})
 
 
@@ -31,7 +34,6 @@ def return_client(s_name, region=reg):
         aws_access_key_id=accesskey,
         aws_secret_access_key=secret_accesskey,
         region_name=region,
-        config=config
     )
 
 IAM_CLIENT = return_client('iam')
@@ -2451,23 +2453,24 @@ def control_map(c_num):
     return control,dependency
 
 
-def compliance_score(output):
-    scored = notscored = count = 0
-    for x in json.loads(output):
-        count+=1
-        if x["ScoredControl"] == "True":
-            if x["IsCompliant"] == "True":
-                scored += 1
-        else:
-            if x["IsCompliant"] == "True":
-                notscored += 0.5
-    totalscore = ((scored+notscored)/count)*100
-    return totalscore
+async def compliance_score(x):
+    scored = notscored = 0
+    if x["ScoredControl"] == "True":
+        if x["IsCompliant"] == "True":
+            scored += 1
+    else:
+        if x["IsCompliant"] == "True":
+            notscored += 0.5
+    global TOTALSCORE
+    TOTALSCORE += scored + notscored
+    return TOTALSCORE
 
 
-def json_input(x):
+async def json_input(x):
+    #await asyncio.sleep(0.01)
     control, dependency = control_map(x["ControlNumber"])
     if dependency != "":
+        await asyncio.sleep(0.00001)
         if dependency == 'get_cloudtrails':
             a = globals()[dependency](get_regions())
         else:
@@ -2475,23 +2478,31 @@ def json_input(x):
         f = globals()[control](a, x)
     else:
         f = globals()[control](x)
+
     return f
 
 
-if __name__ == "__main__":
+async def main():
     json_list=[]
-    timeout = 10
-    num_workers = int(cpu_count() - 2)
-    pool = Pool(num_workers)
+    count=0
+    start = time.time()
     input_json_data = << INPUT JSON >>
     for row in input_json_data:
-        result = pool.apply_async(json_input, args=(row,))
-        json_list.append(result.get())
-    pool.close()
-    pool.join()
-    json_output = json.dumps(json_list)
-    score = compliance_score(json_output)
+        count+=1
+        json_list.append(asyncio.ensure_future(json_input(row)))
+    js = await asyncio.gather(*json_list)
+    for j in js:
+        score = loop.create_task(compliance_score(j))
+    json_output = json.dumps(js)
+    end = time.time()
+    t = end - start
+    print("Execution time: %4f"%(t))
     print(json_output)
     print("=======================================================")
-    print("============= COMPLIANCE SCORE : "+str(score)+"% ================")
+    print("============= COMPLIANCE SCORE : "+str((await score/count)*100)+"% ================")
     print("=======================================================")
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+    loop.close()
