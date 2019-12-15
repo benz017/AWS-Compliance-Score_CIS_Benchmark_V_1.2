@@ -8,7 +8,7 @@ It also gives you a compliance score based on the number of Controls sent to the
   
 **`Total Compliance Score = ((Compliant Scored controls + Compliant Not-Scored controls)/Total No. of Controls)*100%`**  
 
-The script uses AsyncIO package to run execution asynchronously over a single thread, enhancing performance by 5-17%.
+The script uses **`AsyncIO package`** to run execution asynchronously over a single thread, enhancing performance by 5-17%.
 Hence, giving us a pretty quick and accurate idea of our AWS cloud infrastructure compliance and thus making the necessary changes to remediate on them further.
 
 ## ======== Set Up ========
